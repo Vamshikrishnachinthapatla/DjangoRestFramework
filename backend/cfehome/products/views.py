@@ -3,18 +3,21 @@ from django.shortcuts import render
 from rest_framework.response import Response
 #from django.http import Http404
 from django.shortcuts import get_object_or_404
-from rest_framework import generics, mixins
+from rest_framework import authentication,generics, mixins, permissions
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
 
 
 from .models import Product
+from .permissions import IsStaffEditorPermission
 from .serializers import ProductSerializer
 
 
 class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    authentication_classes = [authentication.SessionAuthentication]
+    permission_classes = [permissions.IsAdminUser, IsStaffEditorPermission]
 
     def perform_create(self, serializer):
         # serializer.save(user=self.request.user)
