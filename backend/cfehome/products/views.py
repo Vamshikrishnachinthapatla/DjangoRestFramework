@@ -24,7 +24,7 @@ class ProductListCreateAPIView(
         content = serializer.validated_data.get('content') or None
         if content is None:
             content = title
-        instance = serializer.save(content=content)
+        serializer.save(content=content)
 
 product_list_create_view = ProductListCreateAPIView.as_view()
 
